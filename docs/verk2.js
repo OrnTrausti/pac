@@ -347,9 +347,9 @@ window.addEventListener('touchstart', function (e) {
     touchStartY = e.changedTouches[0].pageY;
 }, false);
 
-window.addEventListener('touchmove', function(e) {
-    e.preventDefault();  // Prevent scrolling and other default touch behaviors
-}, { passive: false });  // Ensuring that the listener can indeed prevent defaults
+window.addEventListener('touchmove', function (e) {
+    e.preventDefault(); // This prevents scrolling during swipe
+}, { passive: false });
 
 window.addEventListener('touchend', function (e) {
     // Get the position where the touch ends
@@ -358,19 +358,21 @@ window.addEventListener('touchend', function (e) {
 
     const xDiff = touchEndX - touchStartX;
     const yDiff = touchEndY - touchStartY;
-
     // Determine the direction based on the magnitude of x and y differences
     if (Math.abs(xDiff) > minSwipeDistance || Math.abs(yDiff) > minSwipeDistance) {
-        if (xDiff > 0) {
-            direction = 'right';
+        // Only update direction if the swipe covers more than 30 pixels
+        if (Math.abs(xDiff) > Math.abs(yDiff)) {
+            if (xDiff > 0) {
+                direction = 'right';
+            } else {
+                direction = 'left';
+            }
         } else {
-            direction = 'left';
-        }
-    } else { // Vertical movement
-        if (yDiff > 0) {
-            direction = 'down';
-        } else {
-            direction = 'up';
+            if (yDiff > 0) {
+                direction = 'down';
+            } else {
+                direction = 'up';
+            }
         }
     }
-});
+})
