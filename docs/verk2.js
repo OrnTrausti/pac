@@ -358,21 +358,19 @@ window.addEventListener('touchend', function (e) {
 
     const xDiff = touchEndX - touchStartX;
     const yDiff = touchEndY - touchStartY;
+
     // Determine the direction based on the magnitude of x and y differences
     if (Math.abs(xDiff) > minSwipeDistance || Math.abs(yDiff) > minSwipeDistance) {
-        // Only update direction if the swipe covers more than 30 pixels
-        if (Math.abs(xDiff) > Math.abs(yDiff)) {
-            if (xDiff > 0) {
-                direction = 'right';
-            } else {
-                direction = 'left';
-            }
+        if (xDiff > 0) {
+            direction = 'right';
         } else {
-            if (yDiff > 0) {
-                direction = 'down';
-            } else {
-                direction = 'up';
-            }
+            direction = 'left';
+        }
+    } else { // Vertical movement
+        if (yDiff > 0) {
+            direction = 'down';
+        } else {
+            direction = 'up';
         }
     }
-})
+});
