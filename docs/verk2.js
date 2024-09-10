@@ -1,9 +1,12 @@
 var canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+canvas.addEventListener('touchstart', handleTouch, false);
+canvas.addEventListener('touchmove', handleTouch, false);
 const ctx = canvas.getContext('2d');
 const fullscreenButton = document.getElementById("fullscreenButton");
 const gameOverSound = new Audio("GameoverPac.mp4");
+
 ///i can def remove most of these...am i gonna no
 
 const LiveTX = canvas.width / 10;
@@ -242,7 +245,27 @@ function touchingPower(power) {
     return false;
 }
 
+function handleTouch(event) {
+    event.preventDefault();
 
+    const touch = event.touches[0];
+    const touchX = touch.clientX;
+    const touchY = touch.clientY;
+
+    // Determine direction based on the touch location
+    const pacManCenterX = pacManX + 20; // Adding 20 to account for PacMan's radius
+    const pacManCenterY = pacManY + 20;
+
+    if (touchY < pacManCenterY - 40) {
+        direction = 'up';
+    } else if (touchY > pacManCenterY + 40) {
+        direction = 'down';
+    } else if (touchX < pacManCenterX - 40) {
+        direction = 'left';
+    } else if (touchX > pacManCenterX + 40) {
+        direction = 'right';
+    }
+}
 
 
 function draw() {
