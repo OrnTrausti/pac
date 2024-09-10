@@ -342,21 +342,20 @@ let touchStartX = 0;
 let touchStartY = 0;
 
 window.addEventListener('touchstart', function (e) {
-    // Remember the starting position when touch starts
+    // Capture the initial position when the touch starts
     touchStartX = e.changedTouches[0].pageX;
     touchStartY = e.changedTouches[0].pageY;
 }, false);
 
-window.addEventListener('touchmove', function (e) {
-    // Prevent scrolling when touching the canvas
-    e.preventDefault();
-
+window.addEventListener('touchend', function (e) {
+    // Get the position where the touch ends
     const touchEndX = e.changedTouches[0].pageX;
     const touchEndY = e.changedTouches[0].pageY;
 
     const xDiff = touchEndX - touchStartX;
     const yDiff = touchEndY - touchStartY;
 
+    // Determine the direction based on the magnitude of x and y differences
     if (Math.abs(xDiff) > Math.abs(yDiff)) { // Horizontal movement
         if (xDiff > 0) {
             direction = 'right';
@@ -370,13 +369,4 @@ window.addEventListener('touchmove', function (e) {
             direction = 'up';
         }
     }
-    // Reset starting position for next movement
-    touchStartX = touchEndX;
-    touchStartY = touchEndY;
-
-}, false);
-
-// Optional: Add touchend listener if needed
-window.addEventListener('touchend', function (e) {
-    // This could be used to stop Pac-Man or any other necessary cleanup
 });
