@@ -10,13 +10,13 @@ const gameOverSound = new Audio("GameoverPac.mp4");
 const LiveTX = canvas.width / 10;
 const LiveTY = canvas.height / 10;
 const PointTX = canvas.width / 3;
-const minSwipeDistance = 30;
+
 
 let pacManX = canvas.width / 2;
 let pacManY = canvas.height / 1.2;
 let direction = '';
 let points = 0;
-let lives = 8;
+let lives = 3;
 let pacspeed = 5;
 //this is just so the sound playes once
 let onceCheck=0;
@@ -360,8 +360,8 @@ window.addEventListener('touchend', function (e) {
     const yDiff = touchEndY - touchStartY;
 
     // Determine the direction based on the magnitude of x and y differences
-    if (Math.abs(xDiff) > minSwipeDistance || Math.abs(yDiff) > minSwipeDistance) {
-                if (xDiff > 0) {
+    if (Math.abs(xDiff) > Math.abs(yDiff)) { // Horizontal movement
+        if (xDiff > 0) {
             direction = 'right';
         } else {
             direction = 'left';
