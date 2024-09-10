@@ -1,8 +1,6 @@
 var canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-canvas.addEventListener('touchstart', handleTouch, false);
-canvas.addEventListener('touchmove', handleTouch, false);
 const ctx = canvas.getContext('2d');
 const fullscreenButton = document.getElementById("fullscreenButton");
 const gameOverSound = new Audio("GameoverPac.mp4");
@@ -245,27 +243,7 @@ function touchingPower(power) {
     return false;
 }
 
-function handleTouch(event) {
-    event.preventDefault();
 
-    const touch = event.touches[0];
-    const touchX = touch.clientX;
-    const touchY = touch.clientY;
-
-    // Determine direction based on the touch location
-    const pacManCenterX = pacManX + 20; // Adding 20 to account for PacMan's radius
-    const pacManCenterY = pacManY + 20;
-
-    if (touchY < pacManCenterY - 40) {
-        direction = 'up';
-    } else if (touchY > pacManCenterY + 40) {
-        direction = 'down';
-    } else if (touchX < pacManCenterX - 40) {
-        direction = 'left';
-    } else if (touchX > pacManCenterX + 40) {
-        direction = 'right';
-    }
-}
 
 
 function draw() {
@@ -360,3 +338,45 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+let touchStartX = 0;
+let touchStartY = 0;
+
+window.addEventListener('touchstart', function (e) {
+    // Remember the starting position when touch starts
+    touchStartX = e.changedTouches[0].pageX;
+    touchStartY = e.changedTouches[0].pageY;
+}, false);
+
+window.addEventListener('touchmove', function (e) {
+    // Prevent scrolling when touching the canvas
+    e.preventDefault();
+
+    const touchEndX = e.changedTouches[0].pageX;
+    const touchEndY = e.changedTouches[0].pageY;
+
+    const xDiff = touchEndX - touchStartX;
+    const yDiff = touchEndY - touchStartY;
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) { // Horizontal movement
+        if (xDiff > 0) {
+            direction = 'right';
+        } else {
+            direction = 'left';
+        }
+    } else { // Vertical movement
+        if (yDiff > 0) {
+            direction = 'down';
+        } else {
+            direction = 'up';
+        }
+    }
+    // Reset starting position for next movement
+    touchStartX = touchEndX;
+    touchStartY = touchEndY;
+
+}, false);
+
+// Optional: Add touchend listener if needed
+window.addEventListener('touchend', function (e) {
+    // This could be used to stop Pac-Man or any other necessary cleanup
+});
