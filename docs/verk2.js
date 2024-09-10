@@ -10,8 +10,10 @@ const gameOverSound = new Audio("GameoverPac.mp4");
 const LiveTX = canvas.width / 10;
 const LiveTY = canvas.height / 10;
 const PointTX = canvas.width / 3;
+const minSwipeDistance = 30; 
 
-
+let touchStartX = 0;
+let touchStartY = 0;
 let pacManX = canvas.width / 2;
 let pacManY = canvas.height / 1.2;
 let direction = '';
@@ -338,35 +340,29 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-let touchStartX = 0;
-let touchStartY = 0;
-const minSwipeDistance = 30; 
 window.addEventListener('touchstart', function (e) {
-    // Capture the initial position when the touch starts
     touchStartX = e.changedTouches[0].pageX;
     touchStartY = e.changedTouches[0].pageY;
 }, false);
 
-window.addEventListener('touchmove', function (e) {
-    e.preventDefault(); // This prevents scrolling during swipe
+window.addEventListener('touchmove', function(e) {
+    e.preventDefault(); 
 }, { passive: false });
 
 window.addEventListener('touchend', function (e) {
-    // Get the position where the touch ends
     const touchEndX = e.changedTouches[0].pageX;
     const touchEndY = e.changedTouches[0].pageY;
 
     const xDiff = touchEndX - touchStartX;
     const yDiff = touchEndY - touchStartY;
 
-    // Determine the direction based on the magnitude of x and y differences
     if (Math.abs(xDiff) > minSwipeDistance || Math.abs(yDiff) > minSwipeDistance) {
         if (xDiff > 0) {
             direction = 'right';
         } else {
             direction = 'left';
         }
-    } else { // Vertical movement
+    } else {
         if (yDiff > 0) {
             direction = 'down';
         } else {
