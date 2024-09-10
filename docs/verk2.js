@@ -340,12 +340,16 @@ document.addEventListener('keydown', function(event) {
 
 let touchStartX = 0;
 let touchStartY = 0;
-
+const minSwipeDistance = 30; 
 window.addEventListener('touchstart', function (e) {
     // Capture the initial position when the touch starts
     touchStartX = e.changedTouches[0].pageX;
     touchStartY = e.changedTouches[0].pageY;
 }, false);
+
+window.addEventListener('touchmove', function(e) {
+    e.preventDefault();  // Prevent scrolling and other default touch behaviors
+}, { passive: false });  // Ensuring that the listener can indeed prevent defaults
 
 window.addEventListener('touchend', function (e) {
     // Get the position where the touch ends
@@ -356,7 +360,7 @@ window.addEventListener('touchend', function (e) {
     const yDiff = touchEndY - touchStartY;
 
     // Determine the direction based on the magnitude of x and y differences
-    if (Math.abs(xDiff) > Math.abs(yDiff)) { // Horizontal movement
+    if (Math.abs(xDiff) > minSwipeDistance || Math.abs(yDiff) > minSwipeDistance) {
         if (xDiff > 0) {
             direction = 'right';
         } else {
