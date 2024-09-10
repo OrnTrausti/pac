@@ -16,7 +16,7 @@ let pacManX = canvas.width / 2;
 let pacManY = canvas.height / 1.2;
 let direction = '';
 let points = 0;
-let lives = 3;
+let lives = 10;
 let pacspeed = 5;
 //this is just so the sound playes once
 let onceCheck=0;
